@@ -39,14 +39,7 @@ def top_p(logits, p, temperature=1.0):
     return top_p_logits, top_p_probabilities
 
 def min_p(logits, p, temperature=1.0):
-    sorted_logits, sorted_probabilities = sort_logits_by_probability(logits, temperature)
-    # Calculate the cumulative probabilities
-    cumulative_prob = np.cumsum(sorted_probabilities)
-    # Find the point where the cumulative probability is above p
-    cutoff_index = np.argmax(cumulative_prob >= p)
-    min_p_logits = sorted_logits[cutoff_index:]
-    min_p_probabilities = sorted_probabilities[cutoff_index:]
-    return min_p_logits, min_p_probabilities
+    return top_p(logits, 1-p, temperature)
 
 
 # Example logits
